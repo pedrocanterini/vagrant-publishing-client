@@ -1,3 +1,4 @@
-.DS_STORE/cookbooks
-/tmp
+.DS_STORE
+cookbooks
+tmp
 Cheffile.lock
