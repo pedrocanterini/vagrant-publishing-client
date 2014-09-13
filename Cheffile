@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+site 'https://supermarket.getchef.com/api/v1'
+
+cookbook 'build-essential'
+cookbook 'nodejs'
+cookbook 'nginx', git: 'https://github.com/opscode-cookbooks/nginx'
