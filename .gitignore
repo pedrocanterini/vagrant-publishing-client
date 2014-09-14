@@ -1,4 +1,26 @@
-.DS_STORE
+# Logs
+logs
+*.log
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directory
+# Deployed apps should consider commenting this line out:
+# see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
+node_modules
+
+# Libraries
+assets/libs
+
+# Compiled CSS
+.sass-cache
+assets/css
+
+# OS Specific files
+.DS_Store
+
+# Cheff
 cookbooks
 tmp
 Cheffile.lock

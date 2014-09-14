@@ -24,13 +24,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 6000, host: 6000
 
   # Sharing app folder with vm so we can develop locally
-  config.vm.synced_folder "app", "/home/vagrant/app"
+  config.vm.synced_folder "App", "/home/vagrant/App"
 
   # Chef provisioning recipes and settings
   config.vm.provision :chef_solo do |chef|
 
     chef.add_recipe 'yum'
     chef.add_recipe "build-essential"
+    chef.add_recipe "git"
     chef.add_recipe 'nginx::source'
     chef.add_recipe "nodejs::nodejs_from_source"
 
@@ -48,28 +49,40 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # TODO: proper nginx config
-  # config.vm.provision :shell,
-  #   :inline => "echo -e $1 > /etc/nginx/conf.d/nginx.conf",
-  #   args: [<<-EOS
-  #       server {
-  #           listen *:80;
+  config.vm.provision :shell,
+    :inline => "echo -e $1 > /etc/nginx/conf.d/nginx.conf",
+    args: [<<-EOS
+        server {
+            listen       80;
 
-  #           location ~ ^/ {
-  #               proxy_pass http://0.0.0.0:8080;
-  #           }
-  #       }
-  #   EOS
-  #   ]
+            location / {
+                root   /home/vagrant/App/;
+                index  index.html index.htm;
+            }
 
-  # Reset boxe's preset firewall (was blocling most ports)
+            location ~ ^/ {
+                proxy_pass http://0.0.0.0:8080;
+            }
+        }
+    EOS
+    ]
+
+  # Reset boxe's preset firewall (was blocking most ports)
   # This is required unless we use another box
   config.vm.provision :shell, :inline => "iptables -F"
 
-  # Run script in case we need to bootstrap something else
-  # config.vm.provision(:bash, :script => "tidy-up.sh")
+  # bower couldn't find node
+  config.vm.provision :shell, :inline => "ln -s /usr/local/bin/node /usr/bin/node"
+  config.vm.provision :shell, :inline => "/usr/local/bin/npm config set prefix /usr/local"
 
   # Install extra packages we might need
-  config.vm.provision :shell, :inline => "npm -g install gulp"
   config.vm.provision :shell, :inline => "gem install sass"
+  config.vm.provision :shell, :inline => "/usr/local/bin/npm -g install gulp"
+  config.vm.provision :shell, :inline => "/usr/local/bin/npm -g install bower"
+  config.vm.provision :shell, :inline => "cd /home/vagrant/App && /usr/local/bin/npm install"
+  config.vm.provision :shell, :inline => "cd /home/vagrant/App && /usr/local/bin/bower --allow-root install"
+
+  # Run script in case we need to bootstrap something else
+  # config.vm.provision(:bash, :script => "tidy-up.sh")
 
 end
