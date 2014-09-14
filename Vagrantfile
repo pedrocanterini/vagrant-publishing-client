@@ -47,11 +47,29 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   end
 
+  # TODO: proper nginx config
+  # config.vm.provision :shell,
+  #   :inline => "echo -e $1 > /etc/nginx/conf.d/nginx.conf",
+  #   args: [<<-EOS
+  #       server {
+  #           listen *:80;
+
+  #           location ~ ^/ {
+  #               proxy_pass http://0.0.0.0:8080;
+  #           }
+  #       }
+  #   EOS
+  #   ]
+
   # Reset boxe's preset firewall (was blocling most ports)
   # This is required unless we use another box
   config.vm.provision :shell, :inline => "iptables -F"
 
   # Run script in case we need to bootstrap something else
   # config.vm.provision(:bash, :script => "tidy-up.sh")
+
+  # Install extra packages we might need
+  config.vm.provision :shell, :inline => "npm -g install gulp"
+  config.vm.provision :shell, :inline => "gem install sass"
 
 end
