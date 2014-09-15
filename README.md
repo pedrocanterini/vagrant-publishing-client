@@ -1,10 +1,12 @@
 ## Basic Vagrant VM.
-WIP.
 
-- Install vagrant and virtualbox
-- vagrant plugin install vagrant-librarian-chef
-- vagrant plugin install vagrant-omnibus
-- clone the config files from github
-- gem install librarian-chef
-- librarian-chef install
-- vagrant up
+### WIP
+
+1. Install vagrant and virtualbox
+1. Install vagrant plugins: 
+    - `vagrant plugin install vagrant-librarian-chef`
+    - `vagrant plugin install vagrant-omnibus`
+1. Clone this repo: `git clone https://github.com/pedrocanterini/vagrant-publishing-client.git`
+1. Install librarian: `gem install librarian-chef`
+1. Install librarian cookbooks: `librarian-chef install`
+1. Start vagrant: `vagrant up`
