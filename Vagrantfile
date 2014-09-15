@@ -36,6 +36,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe 'yum'
     chef.add_recipe "build-essential"
     chef.add_recipe "git"
+    # chef.add_recipe "ruby_build"
+    # chef.add_recipe "rbenv::user"
+    # chef.add_recipe "rbenv::vagrant"
     chef.add_recipe 'nginx::source'
     chef.add_recipe "nodejs::nodejs_from_source"
 
@@ -122,6 +125,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :shell, :inline => "/usr/local/bin/npm config set prefix /usr/local"
 
   # Install extra packages we might need
+  config.vm.provision :shell, :inline => "sudo yum -y install ruby rubygems"
   config.vm.provision :shell, :inline => "gem install sass"
   config.vm.provision :shell, :inline => "/usr/local/bin/npm -g install gulp"
   config.vm.provision :shell, :inline => "/usr/local/bin/npm -g install bower"
