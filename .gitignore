@@ -24,3 +24,6 @@ assets/css
 cookbooks
 tmp
 Cheffile.lock
+
+#Vagrant
+.vagrant
