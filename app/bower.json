@@ -1,0 +1,17 @@
+{
+    "name": "Publishing Client",
+    "version": "0.0.1",
+    "private": true,
+    "ignore": [
+          "**/.*",
+          "node_modules",
+          "bower_components",
+          "./assets/libs",
+          "test",
+          "tests"
+    ],
+    "dependencies": {
+          "angular-route": "~1.2.23",
+          "angular": "~1.2.23"
+    }
+}

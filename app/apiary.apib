@@ -1,0 +1,513 @@
+FORMAT: 1A
+HOST: https://api.piqora.com
+
+# Piqora
+Publishing API
+
+# Group Examples
+## Request Format
+### The resouce to be updated ex: `posts`, an array of items to CRUD.
+
+        {
+            "data": {
+                "resource_name": [
+                    {
+                        "id": 123,
+                        "property_to_update": "some value"
+                    }
+                ]
+            }
+        }
+
+## Response Format
+### Contains two sections for differentiating actual request payload (data), and request information (meta)
+
+*Data:* Contains a key named for the resource it was requested from. This will be an array containing the results from the request. This will always be a plural resource and an array, even if a single item.
+
+*Meta:* Contains tangent information. Keys for the different types of information will contain arrays of items relevant to that type.
+
+        {
+            "meta": {
+                "messages": [
+                    {
+                        "id": "some_element", //optional, ties to a specific form element
+                        "type": "info", // "success" | "info" | "warn" | "error"
+                        "text": "Your action was successful. Good job."
+                    }
+                ]
+            },
+            "data": {
+                "resource_name": [ // ex: `media`
+                    {
+                        "id": 123,
+                        "property": "something",
+                        "another_property": "something else"
+                    }
+                ]
+            }
+        }
+
+# Group Media
+Media related resources of the **Publishing API**
+
+## Media Collection [/media]
+### List all media [GET]
++ Response 200 (application/json)
+
+        [{
+          "id": 1,
+          "title": "Jogging in park"
+        }, {
+          "id": 2,
+          "title": "Pick-up posters from post-office"
+        }]
+
+### Create a Media [POST]
++ Request (application/json)
+
+        { "title": "Buy cheese and bread for breakfast." }
+
++ Response 201 (application/json)
+
+        { "id": 3, "title": "Buy cheese and bread for breakfast." }
+
+## Media [/media/{id}]
+A single Media object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Media to perform action with.
+
+### Retrieve a Media [GET]
++ Response 200 (application/json)
+
+    + Header
+
+            X-My-Header: The Value
+
+    + Body
+
+            { 
+                "id": 2,
+                "title": "Pick-up posters from post-office",
+                "posts": [
+                    {
+                        "id": "asdsdasd"
+                    },
+                    {
+                        "id": "something"
+                    }
+                ]
+            }
+            
++ Response 404 (application/json)
+
+        {
+            "meta": {
+                "errors": [
+                    "Media Not Found ¯\_(ツ)_/¯"
+                ]
+            }
+        }
+            
+### Update a Media [PUT]
++ Request (application/json)
+
+        {
+            "meta": "data"
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "updated": "media"
+        }
+
+### Remove a Media [DELETE]
++ Response 204
+
+# Group Posts
+Post related resources of the **Publishing API**
+
+## Posts Collection [/posts{?status}]
++ Parameters
+    + status (optional, string, `failed`) ... The status of the pin, posted|failed
+    
+### List all posts [GET]
++ Response 200 (application/json)
+
+        [{
+            "id": 1
+        }]
+        
+### Create/Schedule Post [POST]
++ Request (application/json)
+
+        { "media_id": 123 }
+
++ Response 201 (application/json)
+
+## Single Posts [/posts/{id}]
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Post to perform action with.
+
+### Retreive a Post and its details [GET]
++ Response 200 (application/json)
+
+        {
+            "format": undefined
+        }
+        
+### Update a Post's details [PUT]
++ Request (application/json)
+
+        {
+            "updated": "details"
+        }
+        
++ Response 200 (application/json)
+
+        {
+            "yolo": "swag"
+        }
+        
+### Remove a Post [DELETE]
++ Response 204
+
+# Group Profiles
+Profile related resources of the **Publishing API**
+
+## Profiles Collection [/profiles]
+
+### Get the network Profiles associated with the user account [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "profiles": []
+            }
+        }
+
+## Profile [/profiles/{profile_id}]
++ Parameters
+    + profile_id (required, number, `123`) ... A `id` for a profile.
+
+### Get the profile info [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "profiles": []
+            }
+        }
+
+## Profile metrics [/profiles/{profile_id}/metrics]
++ Parameters
+    + profile_id (required, number, `123`) ... A `id` for a profile.
+
+### Get the profile info with metrics [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "profiles": []
+            }
+        }
+
+## Profile metrics [/profiles/{profile_id}/metrics/{metric_id}]
++ Parameters
+    + profile_id (required, number, `123`) ... A `id` for a profile.
+    + metric_id (required, string, `followers`) ... The metric name.
+
+### Get the profile info with metrics [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "profiles": []
+            }
+        }
+
+## Boards Collection [/profiles/{profile_id}/boards]
+
++ Parameters
+    + profile_id (required, number, `123`) ... A `id` for a profile.
+
+### Get the collection of boards and their associated information [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "boards": []
+            }
+        }
+        
+## Board Metric Collection [/profiles/{profile_id}/boards/metrics]
+
++ Parameters
+    + profile_id (required, number, `123`) ... A `id` for a profile.
+
+### Get all boards, and their associated metrics [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "boards": [
+                    {
+                        "id": 123,
+                        "names": [
+                            {
+                                "name": "Happy Kitty Fun Time",
+                                "metrics" : [{}]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+
+## Board Singular [/profiles/{profile_id}/boards/{board_id}]
+
++ Parameters
+    + profile_id (required, number, `123`) ... A `id` for a profile.
+    + board_id (required, number, `123`) ... the `id` for a board.
+
+### Get information about a board [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "boards": []
+            }
+        }
+
+## Board Singular [/profiles/{profile_id}/boards/{board_id}/metrics]
+
++ Parameters
+    + profile_id (required, number, `123`) ... A `id` for a profile.
+    + board_id (required, number, `123`) ... A number(id) for a board.
+
+### Get metrics about a board [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "boards": [
+                    {
+                        "id": 123,
+                        "names": [
+                            {
+                                "name": "Happy Kitty Fun Time",
+                                "metrics" : [{}]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+
+## Board Metric for a single board [/profiles/{profile_id}/boards/{board_id}/metrics/{metric_id}]
+
++ Parameters
+    + profile_id (required, number, `123`) ... A `id` for a profile.
+    + board_id (required, number, `123`) ... An id for a board.
+    + metric_id (required, string, `followers`) ... The metric name.
+
+### Get a single metric for a specific board. [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "boards": [
+                    {
+                        "id": 123,
+                        "names": [
+                            {
+                                "name": "Happy Kitty Fun Time",
+                                "metrics" : [{}]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+
+# Group Schedules
+Schedule related resources of the **Publishing API**
+
+# Group Search
+Searching the stuff, yo
+
+## Search [/search{?q,offset,limit,filter,sort,type}]
+
++ Parameters
+    + q (optional, string, `winter`) ... The query value.
+    + offset (optional, number, `1`) ... The starting item of the page.
+    + limit (optional, number, `25`) ... The page size.
+    + filter (optional, object, `{ "type": "timeslice", "start_date": "2014-10-01", "end_date": "2014-10-31" }`) ... Filtering the results based on an advance filter.
+    + sort (optional, string, `likes`) ... Which field to sort by.
+    + type (optional, string, `keyword`) ... Determine which fields the query string is applied to.
+
+### The search endpoint [POST]
++ Request (application/json)
+
+        {
+            "q": "winter",
+            "offset": 1,
+            "limit": 25,
+            "filter": {
+                "type": "timeslice",
+                "start_date": "2014-10-01",
+                "end_date": "2014-10-31"
+            },
+            "sort": "likes",
+            "type": "keyword"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "search_results": []
+            }
+        }
+
+# Group Tags
+
+## Tag Collection [/tags]
+### List all tags associated to the current user [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "tags": [
+                    {
+                        "label": "Red Clothes",
+                        "id": 100,
+                        "color": "#FF0000"
+                    }
+                ]
+            }
+        }
+
+### Create a new tag [POST]
++ Request (application/json)
+
+        {
+            "label": "Something"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "data": {
+                "tag": {
+                    "label": "Green Clothes",
+                    "id": 101,
+                    "color": "#00FF00"
+                }
+            }
+        }
+        
+## Tag Singular [/tags/{id}]
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Media to perform action with.
+
+### Get tag and details [GET]
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "tag": {
+                    "label": "Blue Clothes",
+                    "id": 102,
+                    "color": "#0000FF"
+                }
+            }
+        }
+        
+### Update a tag's details [PUT]
++ Request (application/json)
+
+        {
+            "label": "Something"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "tag": {
+                    "label": "Blue Clothes",
+                    "id": 102,
+                    "color": "#0000FF"
+                }
+            }
+        }
+
+### Remove a tag, and remove it from all associated media [DELETE]
++ Response 204 (application/json)
+
+
+# Group Users
+## Users Collection [/users]
+### List all users [GET]
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "user": {
+                    
+                }
+            },
+            "data": {
+                "users": []
+            }
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "meta": {
+                "errors": [
+                    "You are not authorized to view that. Bad user. Bad."
+                ]
+            }
+        }
+
+## User [/users/me]
+### Gets details about the current user [GET]
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "user": {
+                    "username": "Brandon Jernigan"
+                }
+            }
+        }
+        
+## User [/users/{id}]
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the User to perform action with.
+
+### Gets details about the specific user account [GET]
++ Response 200 (application/json)
+
+        {
+            "meta": {
+                "user": {
+                    "username": "Brandon Jernigan"
+                }
+            }
+        }
+
++ Response 401 (application/json)
+
+        {
+            "meta": {
+                "errors": [
+                    "You are not authorized to view that. Bad user. Bad."
+                ]
+            }
+        }
